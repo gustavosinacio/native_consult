@@ -1,34 +1,30 @@
 import React from 'react';
-import { Text } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
-import Main from './pages/Main';
+import Form from './pages/Form';
 import User from './pages/User';
+import FormIcon from './icons/FormIcon';
 
-import { mainColor } from './assets/color';
-
-const HeaderRight = () => (
-  <Text style={{ color: '#fff' }}>Animated Icon here</Text>
-);
+import { mainColor, mainTextColor } from './assets/colors';
 
 const Routes = createStackNavigator(
   // RoutesConfig
   {
-    Main,
+    Form,
     User,
   },
   // StackNavigatorConfig
   {
-    initialRouteName: 'Main',
+    initialRouteName: 'Form',
     defaultNavigationOptions: {
       headerTitleAlign: 'center',
       headerShown: true,
-      headerRight: () => <HeaderRight />,
+      headerRight: () => <FormIcon />,
       headerStyle: {
         backgroundColor: mainColor,
       },
-      headerTintColor: '#fff',
+      headerTintColor: mainTextColor,
     },
   }
 );
