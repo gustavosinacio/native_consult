@@ -16,16 +16,23 @@ import {
 } from './styles';
 
 export default function SignUp({ navigation }) {
-  const lottie = useRef();
+  const lottieRef = useRef();
+  const emailRef = useRef();
+  const passwordRef = useRef();
+
   const [isAnimating, setIsAnimating] = useState(true);
 
   function handleAnimationClick() {
     setIsAnimating(true);
-    if (!isAnimating) lottie.current.play();
+    if (!isAnimating) lottieRef.current.play();
   }
 
   function handleLinkClick() {
     navigation.navigate('SignIn');
+  }
+
+  function handleSubmit() {
+    // console.tron.log('send');
   }
 
   return (
@@ -38,9 +45,7 @@ export default function SignUp({ navigation }) {
             source={animationSource}
             autoPlay
             loop={false}
-            ref={animation => {
-              lottie.current = animation;
-            }}
+            ref={lottieRef}
             onAnimationFinish={() => setIsAnimating(false)}
           />
         </TouchableWithoutFeedback>
@@ -51,6 +56,8 @@ export default function SignUp({ navigation }) {
             autoCorrect
             autoCapitalize="none"
             placeholder="Digite seu nome"
+            returnKeyType="next"
+            onSubmitEditing={() => emailRef.current.focus()}
           />
           <FormInput
             icon="mail-outline"
@@ -58,6 +65,9 @@ export default function SignUp({ navigation }) {
             autoCorrect={false}
             autoCapitalize="none"
             placeholder="Digite seu e-mail"
+            returnKeyType="next"
+            onSubmitEditing={() => passwordRef.current.focus()}
+            ref={emailRef}
           />
           <FormInput
             icon="lock-outline"
@@ -65,12 +75,15 @@ export default function SignUp({ navigation }) {
             autoCorrect={false}
             autoCapitalize="none"
             placeholder="Digite sua senha"
+            ref={passwordRef}
+            returnKeyType="send"
+            onSubmitEditing={handleSubmit}
           />
           <SubmitButton onPress={() => {}}>Entrar</SubmitButton>
         </Form>
 
         <LinkAccount onPress={handleLinkClick}>
-          <LinkAccountText>Entrar na sua conta</LinkAccountText>
+          <LinkAccountText>Já tenho uma conta</LinkAccountText>
         </LinkAccount>
       </Container>
     </Background>

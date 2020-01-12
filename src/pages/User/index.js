@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import api from '~/services/api';
+import api from '~/services/githubApi';
 
 import {
   Container,
@@ -39,7 +39,7 @@ export default function User({ navigation }) {
   }, [user.login]);
 
   useEffect(() => {
-    console.tron.log({ stars, user });
+    // console.tron.log({ stars, user });
   }, [stars, user]);
 
   return (

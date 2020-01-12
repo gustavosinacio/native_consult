@@ -16,16 +16,22 @@ import {
 } from './styles';
 
 export default function SignIn({ navigation }) {
-  const lottie = useRef();
+  const lottieRef = useRef();
+  const passwordRef = useRef();
+
   const [isAnimating, setIsAnimating] = useState(true);
 
   function handleAnimationClick() {
     setIsAnimating(true);
-    if (!isAnimating) lottie.current.play();
+    if (!isAnimating) lottieRef.current.play();
   }
 
   function handleLinkClick() {
     navigation.navigate('SignUp');
+  }
+
+  function handleSubmit() {
+    // console.tron.log('send');
   }
 
   return (
@@ -38,9 +44,7 @@ export default function SignIn({ navigation }) {
             source={animationSource}
             autoPlay
             loop={false}
-            ref={animation => {
-              lottie.current = animation;
-            }}
+            ref={lottieRef}
             onAnimationFinish={() => setIsAnimating(false)}
           />
         </TouchableWithoutFeedback>
@@ -52,6 +56,8 @@ export default function SignIn({ navigation }) {
             autoCorrect={false}
             autoCapitalize="none"
             placeholder="Digite seu e-mail"
+            returnKeyType="next"
+            onSubmitEditing={() => passwordRef.current.focus()}
           />
           <FormInput
             icon="lock-outline"
@@ -59,8 +65,11 @@ export default function SignIn({ navigation }) {
             autoCorrect={false}
             autoCapitalize="none"
             placeholder="Digite sua senha"
+            returnKeyType="send"
+            onSubmitEditing={handleSubmit}
+            ref={passwordRef}
           />
-          <SubmitButton onPress={() => {}}>Entrar</SubmitButton>
+          <SubmitButton onPress={handleSubmit}>Entrar</SubmitButton>
         </Form>
 
         <LinkAccount onPress={handleLinkClick}>

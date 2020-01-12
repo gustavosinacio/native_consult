@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Keyboard, ActivityIndicator, AsyncStorage } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import api from '~/services/api';
+import api from '~/services/githubApi';
 import { mainTextColor } from '~/assets/colors';
 import {
   ContainerView,
