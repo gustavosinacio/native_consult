@@ -4,8 +4,8 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 import FormIcon from '~/icons/FormIcon';
 
-import SignIn from '~/pages/SignIn';
-import SignUp from '~/pages/SignUp';
+import SignIn from '~/pages/Sign/SignIn';
+import SignUp from '~/pages/Sign/SignUp';
 import Form from '~/pages/Form';
 import User from '~/pages/User';
 

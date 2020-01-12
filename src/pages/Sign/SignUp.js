@@ -1,26 +1,31 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef } from 'react';
+import PropTypes from 'prop-types';
 import LottieView from 'lottie-react-native';
 
 import { TouchableWithoutFeedback } from 'react-native';
 import animationSource from '~/assets/dumbbell.json';
 
 import Background from '~/components/Background';
-
 import {
   Container,
   Form,
   FormInput,
   SubmitButton,
-  SignLink,
-  SignLinkText,
+  LinkAccount,
+  LinkAccountText,
 } from './styles';
 
-export default function SignIn() {
+export default function SignUp({ navigation }) {
   const lottie = useRef();
+  const [isAnimating, setIsAnimating] = useState(true);
 
   function handleAnimationClick() {
-    console.tron.log('click');
-    lottie.current.play();
+    setIsAnimating(true);
+    if (!isAnimating) lottie.current.play();
+  }
+
+  function handleLinkClick() {
+    navigation.navigate('SignIn');
   }
 
   return (
@@ -36,10 +41,17 @@ export default function SignIn() {
             ref={animation => {
               lottie.current = animation;
             }}
+            onAnimationFinish={() => setIsAnimating(false)}
           />
         </TouchableWithoutFeedback>
 
         <Form>
+          <FormInput
+            icon="person-outline"
+            autoCorrect
+            autoCapitalize="none"
+            placeholder="Digite seu nome"
+          />
           <FormInput
             icon="mail-outline"
             keyboardType="email-address"
@@ -57,10 +69,16 @@ export default function SignIn() {
           <SubmitButton onPress={() => {}}>Entrar</SubmitButton>
         </Form>
 
-        <SignLink onPress={() => {}}>
-          <SignLinkText>Criar conta gratuita</SignLinkText>
-        </SignLink>
+        <LinkAccount onPress={handleLinkClick}>
+          <LinkAccountText>Entrar na sua conta</LinkAccountText>
+        </LinkAccount>
       </Container>
     </Background>
   );
 }
+
+SignUp.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};
