@@ -5,12 +5,11 @@ import React from 'react';
 import { StatusBar } from 'react-native';
 
 import Routes from '~/routes';
-import { mainColor } from '~/assets/colors';
 
 function HomeScreen() {
   return (
     <>
-      <StatusBar backgroundColor={mainColor} barStyle="light-content" />
+      <StatusBar translucent backgroundColor="#0000" barStyle="dark-content" />
       <Routes />
     </>
   );

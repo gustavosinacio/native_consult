@@ -1,32 +1,36 @@
 import React from 'react';
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
-import Form from './pages/Form';
-import User from './pages/User';
-import FormIcon from './icons/FormIcon';
+import FormIcon from '~/icons/FormIcon';
 
-import { mainColor, mainTextColor } from './assets/colors';
+import SignIn from '~/pages/SignIn';
+import SignUp from '~/pages/SignUp';
+import Form from '~/pages/Form';
+import User from '~/pages/User';
 
-const Routes = createStackNavigator(
-  // RoutesConfig
-  {
-    Form,
-    User,
-  },
-  // StackNavigatorConfig
-  {
-    initialRouteName: 'Form',
-    defaultNavigationOptions: {
-      headerTitleAlign: 'center',
-      headerShown: true,
-      headerRight: () => <FormIcon />,
-      headerStyle: {
-        backgroundColor: mainColor,
-      },
-      headerTintColor: mainTextColor,
+import { mainColor, mainTextColor } from '~/assets/colors';
+
+const githubStack = {
+  Form,
+  User,
+};
+const githubStackOptions = {
+  initialRouteName: 'Form',
+  defaultNavigationOptions: {
+    headerTitleAlign: 'center',
+    headerShown: false,
+    headerRight: () => <FormIcon />,
+    headerStyle: {
+      backgroundColor: mainColor,
     },
-  }
-);
+    headerTintColor: mainTextColor,
+  },
+};
+
+const Routes = createSwitchNavigator({
+  SignIn,
+  SignUp,
+});
 
 export default createAppContainer(Routes);
