@@ -38,6 +38,7 @@ export const SubmitButton = styled(RectButton)`
   border-radius: 4px;
   margin-left: 10px;
   padding: 0 12px;
+  opacity: ${props => (props.loading ? 0.7 : 1)};
 `;
 
 export const List = styled.FlatList.attrs(() => ({
@@ -46,9 +47,13 @@ export const List = styled.FlatList.attrs(() => ({
   margin-top: 20px;
 `;
 
-export const User = styled.View`
+export const User = styled.TouchableOpacity`
   align-items: center;
   margin: 0 20px 30px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 20px;
+  background-color: #eee;
 `;
 
 export const Avatar = styled.Image`

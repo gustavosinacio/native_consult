@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { Keyboard } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { Keyboard, ActivityIndicator, AsyncStorage } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import api from '../../services/api';
-import { mainTextColor } from '../../assets/colors';
+import api from '~/services/api';
+import { mainTextColor } from '~/assets/colors';
 import {
   ContainerView,
   FormView,
@@ -14,29 +15,52 @@ import {
   Avatar,
   Name,
   Bio,
-  ProfileButton,
-  ProfileButtonText,
 } from './styles';
 
-export default function Form() {
-  const [users, setUsers] = useState([]);
+export default function Form({ navigation }) {
+  const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState();
   const [newUser, setNewUser] = useState('');
 
   async function handleAddUser() {
-    const response = await api.get(`/users/${newUser}`);
-
-    const data = {
-      name: response.data.name,
-      login: response.data.login,
-      bio: response.data.bio,
-      avatar: response.data.avatar_url,
-    };
-
-    setUsers(users.concat(data));
-    setNewUser('');
-
+    setLoading(true);
+    try {
+      const response = await api.get(`/users/${newUser}`);
+      const data = {
+        name: response.data.name,
+        login: response.data.login,
+        bio: response.data.bio,
+        avatar: response.data.avatar_url,
+      };
+      setUsers(users.concat(data));
+      setNewUser('');
+    } catch (err) {
+      //
+    }
+    setLoading(false);
     Keyboard.dismiss();
   }
+
+  function handleClickUserCard(user) {
+    navigation.navigate('User', { user });
+  }
+
+  useEffect(() => {
+    AsyncStorage.setItem('users', JSON.stringify(users));
+  }, [users]);
+
+  useEffect(() => {
+    // console.tron.log(AsyncStorage.getAllKeys());
+
+    async function getAsyncStorage() {
+      const storedUsers = await AsyncStorage.getItem('users');
+      if (storedUsers) {
+        setUsers(JSON.parse(storedUsers));
+      }
+      // console.tron.log('get', AsyncStorage.getAllKeys());
+    }
+    getAsyncStorage();
+  }, []);
 
   return (
     <ContainerView>
@@ -50,29 +74,36 @@ export default function Form() {
           returnKeyType="send"
           onSubmitEditing={handleAddUser}
         />
-        <SubmitButton onPress={handleAddUser}>
-          <Icon name="add" size={30} color={mainTextColor} />
+        <SubmitButton loading={loading} onPress={handleAddUser}>
+          {loading ? (
+            <ActivityIndicator color={mainTextColor} size={30} />
+          ) : (
+            <Icon name="add" size={30} color={mainTextColor} />
+          )}
         </SubmitButton>
       </FormView>
 
       <List
         data={users}
         keyExtractor={user => user.login}
-        renderItem={({ item }) => {
-          console.tron.log(item);
-          return (
-            <User>
-              <Avatar source={{ uri: item.avatar }} />
-              <Name>{item.name}</Name>
-              <Bio>{item.bio}</Bio>
-
-              <ProfileButton>
-                <ProfileButtonText>Ver Perfil</ProfileButtonText>
-              </ProfileButton>
-            </User>
-          );
-        }}
+        renderItem={({ item }) => (
+          <User onPress={() => handleClickUserCard(item)}>
+            <Avatar source={{ uri: item.avatar }} />
+            <Name>{item.name}</Name>
+            <Bio>{item.bio}</Bio>
+          </User>
+        )}
       />
     </ContainerView>
   );
 }
+
+Form.navigationOptions = {
+  title: 'Github Users',
+};
+
+Form.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};

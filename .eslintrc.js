@@ -23,6 +23,7 @@ module.exports = {
   },
   plugins: [
     'react',
+    'react-hooks',
     'prettier' // includes the plugin
   ],
   rules: {
@@ -33,6 +34,15 @@ module.exports = {
         extensions: ['.jsx', '.js']
       }
     ],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
     'import/prefer-default-export': 'off'
   },
+  settings: {
+    'import/resolver': {
+      'babel-plugin-root-import': {
+        rootPathSuffix: 'src'
+      }
+    }
+  }
 };
