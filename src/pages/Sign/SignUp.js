@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import LottieView from 'lottie-react-native';
 
@@ -15,12 +16,19 @@ import {
   LinkAccountText,
 } from './styles';
 
+import { signUpRequest } from '~/store/modules/auth/actions';
+
 export default function SignUp({ navigation }) {
+  const dispatch = useDispatch();
+
   const lottieRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
 
   const [isAnimating, setIsAnimating] = useState(true);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   function handleAnimationClick() {
     setIsAnimating(true);
@@ -33,6 +41,7 @@ export default function SignUp({ navigation }) {
 
   function handleSubmit() {
     // console.tron.log('send');
+    dispatch(signUpRequest(name, email, password));
   }
 
   return (
@@ -50,7 +59,7 @@ export default function SignUp({ navigation }) {
           />
         </TouchableWithoutFeedback>
 
-        <Form>
+        <Form onSubmitEditing={handleSubmit}>
           <FormInput
             icon="person-outline"
             autoCorrect
@@ -58,6 +67,8 @@ export default function SignUp({ navigation }) {
             placeholder="Digite seu nome"
             returnKeyType="next"
             onSubmitEditing={() => emailRef.current.focus()}
+            value={name}
+            onChangeText={setName}
           />
           <FormInput
             icon="mail-outline"
@@ -68,6 +79,8 @@ export default function SignUp({ navigation }) {
             returnKeyType="next"
             onSubmitEditing={() => passwordRef.current.focus()}
             ref={emailRef}
+            value={email}
+            onChangeText={setEmail}
           />
           <FormInput
             icon="lock-outline"
@@ -78,8 +91,10 @@ export default function SignUp({ navigation }) {
             ref={passwordRef}
             returnKeyType="send"
             onSubmitEditing={handleSubmit}
+            value={password}
+            onChangeText={setPassword}
           />
-          <SubmitButton onPress={() => {}}>Entrar</SubmitButton>
+          <SubmitButton onPress={handleSubmit}>Entrar</SubmitButton>
         </Form>
 
         <LinkAccount onPress={handleLinkClick}>

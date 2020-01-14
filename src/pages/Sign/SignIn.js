@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import LottieView from 'lottie-react-native';
 
@@ -14,10 +15,16 @@ import {
   LinkAccount,
   LinkAccountText,
 } from './styles';
+import { signInRequest } from '~/store/modules/auth/actions';
 
 export default function SignIn({ navigation }) {
+  const dispatch = useDispatch();
+
   const lottieRef = useRef();
   const passwordRef = useRef();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const [isAnimating, setIsAnimating] = useState(true);
 
@@ -31,7 +38,7 @@ export default function SignIn({ navigation }) {
   }
 
   function handleSubmit() {
-    // console.tron.log('send');
+    dispatch(signInRequest(email, password));
   }
 
   return (
@@ -58,6 +65,8 @@ export default function SignIn({ navigation }) {
             placeholder="Digite seu e-mail"
             returnKeyType="next"
             onSubmitEditing={() => passwordRef.current.focus()}
+            value={email}
+            onChangeText={setEmail}
           />
           <FormInput
             icon="lock-outline"
@@ -68,6 +77,8 @@ export default function SignIn({ navigation }) {
             returnKeyType="send"
             onSubmitEditing={handleSubmit}
             ref={passwordRef}
+            value={password}
+            onChangeText={setPassword}
           />
           <SubmitButton onPress={handleSubmit}>Entrar</SubmitButton>
         </Form>
